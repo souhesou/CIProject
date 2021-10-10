@@ -2,27 +2,60 @@ package tn.esprit.spring.services;
 
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import tn.esprit.spring.entities.Employe;
+import tn.esprit.spring.entities.User;
 import tn.esprit.spring.repository.EmployeRepository;
 
 @Service
 public class EmployeService implements IEmployeService {
 	
+	private static final Logger l = LogManager.getLogger(EmployeService.class);
+	
 	@Autowired
 	EmployeRepository ie;
 	
-	
+	@Override
 	public Employe addEmploye(Employe employe)
 	{
 		return ie.save(employe); 
 		
 	}
+	@Override
+	public List<Employe> retrieveAllEmploye(){
+		List<Employe> employees = null; 
+		try {
 	
-	public List<Employe> retrieveAllEmploye(){}
-	public void remove(int idEmploye){}
-	public Employe updateEmploye(Employe employe){}
+			l.info("In retrieveAllEmploye() : ");
+			employees = (List<Employe>) ie.findAll();  
+			for (Employe employe : employees) {
+				l.debug("employe +++ : " + employe);
+			} 
+			l.info("Out of retrieveAllEmployes() : ");
+		}catch (Exception e) {
+			l.error("Error in retrieveAllEmployes() : " + e);
+		}
+
+		return employees;
+		
+	}
+	
+	
+	@Override
+	public void remove(int idEmploye)
+	{
+		ie.deleteById(idEmploye);
+	}
+	
+	@Override
+	public Employe updateEmploye(Employe employe)
+	{
+		return ie.save(employe);
+
+	}
 
 }
