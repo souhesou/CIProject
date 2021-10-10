@@ -1,5 +1,6 @@
 package tn.esprit.spring.services;
 
+
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -8,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import tn.esprit.spring.entities.Employe;
-import tn.esprit.spring.entities.User;
 import tn.esprit.spring.repository.EmployeRepository;
 
 @Service
@@ -46,9 +46,9 @@ public class EmployeService implements IEmployeService {
 	
 	
 	@Override
-	public void remove(int idEmploye)
+	public void remove(String idEmploye)
 	{
-		ie.deleteById(idEmploye);
+		ie.deleteById(Long.parseLong(idEmploye));
 	}
 	
 	@Override
@@ -57,5 +57,16 @@ public class EmployeService implements IEmployeService {
 		return ie.save(employe);
 
 	}
+	@Override
+	public Employe retrieveEmploye(String id) {
+		l.info("in  retrieveEmploye id = " + id);
+		Employe e =  ie.findById(Long.parseLong(id)).get(); 
+		l.info("employe returned : " + e);
+		return e; 
+	
+
+	}
+	
+	
 
 }
